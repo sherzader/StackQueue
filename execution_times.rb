@@ -15,21 +15,61 @@ end
 # p my_min(list)  # =>  -5
 
 def largest_contiguous_subsum(list)
-  sub_sum_sets = []
+  current_sum = 0
+  max_sum = 0
 
-  list.length.times do |start_pos|
-    (1..list.length - start_pos).each do |len|
-      sub_sum_sets << list[start_pos...start_pos + len]
-      p sub_sum_sets
+  list.each do |el|
+    current_sum += el
+    if current_sum > max_sum
+      max_sum = current_sum
+    elsif current_sum < 0
+      current_sum = 0
     end
   end
-
-  sums = sub_sum_sets.map do |sub_set|
-    sub_set.inject(:+)
-  end
-  sums.max
+  max_sum
 end
 
-list = [5, 3, -7]
-p largest_contiguous_subsum(list) # => 8
+# list = [5, 3, -7]
+# p largest_contiguous_subsum(list) # => 8
 #worst-case O(n^2) if not more
+
+
+def first_anagram?(word1, word2)
+  all_anags = word1.chars.permutation(word1.length).to_a
+  all_anags.map!(&:join)
+  all_anags.include? word2
+end
+
+def second_anagram?(word1, word2)
+  word1.each_char.with_index do |letter, i|
+    if word2.include? letter
+      word1.delete! letter
+      word2.delete! letter
+    end
+  end
+  word1.empty? && word2.empty?
+end
+
+
+def third_anagram?(word1, word2)
+  word1.chars.sort == word2.chars.sort
+end
+
+def fourth_anagram?(word1, word2)
+  ana = Hash.new(){ |h,k| h[k] = 0 }
+
+  word1.each_char do |ch|
+    ana[ch] += 1
+  end
+
+  word2.each_char do |ch|
+    ana[ch] += 1
+  end
+
+  ana.keys.length == word1.length
+end
+
+p fourth_anagram?("gizmo", "sally")
+p fourth_anagram?("elvis", "lives")
+# p anagram?("gizmo", "sally")    #=> false
+# p anagram?("elvis", "lives")    #=> true
