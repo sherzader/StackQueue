@@ -69,7 +69,57 @@ def fourth_anagram?(word1, word2)
   ana.keys.length == word1.length
 end
 
-p fourth_anagram?("gizmo", "sally")
-p fourth_anagram?("elvis", "lives")
+# p fourth_anagram?("gizmo", "sally")
+# p fourth_anagram?("elvis", "lives")
 # p anagram?("gizmo", "sally")    #=> false
 # p anagram?("elvis", "lives")    #=> true
+
+def bad_two_sum(arr, there_now)
+  arr.each do |this_now|
+    arr.each do |that_now|
+      if this_now != that_now
+        return true if this_now + that_now == there_now
+      end
+    end
+  end
+  false
+end
+
+# p bad_two_sum(arr, 6)
+# p bad_two_sum(arr, 10)
+
+def okay_two_sum?
+end
+
+def best_two_sum?(arr, target_sum)
+  complements = {}
+
+  arr.each do |el|
+    return true if complements[target_sum - el]
+    complements[el] = true
+  end
+
+  false
+end
+
+# arr = [0, 1, 5, 7]
+# p best_two_sum?(arr, 12)
+# # p best_two_sum?(arr, 10)
+
+def max_window_range(arr, window)
+  max_range = nil
+  windows_qty = arr.length - (window - 1)
+  windows_qty.times do |start_pos|
+    window_slice = arr.slice(start_pos...start_pos + window)
+    a_range = window_slice.max - window_slice.min
+    if max_range.nil? || a_range > max_range
+      max_range = a_range
+    end
+  end
+  max_range
+end
+
+p max_window_range([1, 0, 2, 5, 4, 8], 2) # == 4 # 4, 8
+p max_window_range([1, 0, 2, 5, 4, 8], 3) # == 5 # 0, 2, 5
+p max_window_range([1, 0, 2, 5, 4, 8], 4) # == 6 # 2, 5, 4, 8
+p max_window_range([1, 3, 2, 5, 4, 8], 5) # == 6 # 3, 2, 5, 4, 8
